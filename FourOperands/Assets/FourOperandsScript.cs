@@ -68,8 +68,10 @@ public class FourOperandsScript : ModuleScript
 
 	private void CheckAnswer()
 	{
+		Log("Submitted answer:");
 		if (CalculateAnswer(chosenOperators.WhereNotNull().ToArray()) == answer)
 		{
+			Log("Result is the same. Module solved.");
 			Solve();
 			PlaySound(KMSoundOverride.SoundEffect.CorrectChime);
 			allTM.ForEach(tm => tm.color = solveColor);
@@ -77,6 +79,7 @@ public class FourOperandsScript : ModuleScript
 		else
 		{
 			isUserInputPossible = false;
+			Log("Not the same result. Strike occured.");
 			Strike();
 			StartCoroutine(ResetAnswer());
 		}
@@ -111,6 +114,7 @@ public class FourOperandsScript : ModuleScript
 			{
 				intendedAnswer[i] = possibleOperators[RNG.Range(0, ((i == intendedAnswer.Length - 1) ? possibleOperators.Length - 1 : possibleOperators.Length))]; //Divide won't appear as last operator because it's lame (Division slander)
 			}
+			Log("Generated result:");
 			answer = CalculateAnswer(intendedAnswer);
 		}
 		while (answer == -1); //No division by 0 should be allowed in the intended answer
@@ -150,6 +154,7 @@ public class FourOperandsScript : ModuleScript
 			}
 			Log(log);
 		}
+		Log("Full equation: {0}{1}{2}{3}{4}{5}{6}={7}", operands[0], operators[0], operands[1], operators[1], operands[2], operators[2], operands[3], res);
 		return res;
 	}
 
